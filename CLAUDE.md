@@ -4,7 +4,21 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project status
 
-Empty repo — nothing built yet. No build/lint/test tooling exists. Once code is added, update this file with the actual commands (do not invent them in the meantime).
+Postgres running locally via `docker compose`. Minimal FastAPI skeleton in `api/` (just a `/health` endpoint) — no persistence, auth, or detection logic yet. Lint/type/audit tooling set up and enforced in CI.
+
+## Commands
+
+- Activate venv: `.venv\Scripts\activate` (PowerShell) or `source .venv/Scripts/activate` (bash)
+- Install deps: `pip install -r requirements.txt -r requirements-dev.txt`
+- Run API: `uvicorn api.main:app --reload`
+- Lint: `ruff check .`
+- Format check: `ruff format --check .` (use `ruff format .` to auto-fix)
+- Type check: `mypy .` (strict mode)
+- Dependency audit: `pip-audit -r requirements.txt -r requirements-dev.txt`
+- Start DB: `docker compose up -d postgres`
+- Stop DB: `docker compose stop postgres`
+
+CI (`.github/workflows/lint.yml`) runs three jobs on push/PR to `main`: ruff (lint + format check), mypy, pip-audit (dependency CVE scan).
 
 ## What this is
 
